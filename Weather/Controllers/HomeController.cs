@@ -68,5 +68,29 @@ namespace WeatherApp.Controllers
 
             return Json(wvm);
         }
+        //public async Task<ActionResult> GetWeatherByZip(float latitude, float longitude)
+        //{
+        //    var apiKey = WebConfigurationManager.AppSettings["dsKey"];
+        //    var dsLink = $"https://api.darksky.net/forecast/{apiKey}/{latitude},{longitude}";
+
+        //    var result = await getDataFromService(dsLink);
+        //    var betterResult = JsonConvert.DeserializeObject<Rootobject>(result);
+
+        //    WeatherViewModel wvm = new WeatherViewModel();
+        //    wvm.currently.temperature = betterResult.currently.temperature;
+        //    wvm.currently.summary = betterResult.currently.summary;
+        //    wvm.currently.windSpeed = betterResult.currently.windSpeed;
+        //    wvm.currently.humidity = betterResult.currently.humidity;
+        //    wvm.currently.precipProbability = betterResult.currently.precipProbability;
+        //    wvm.currently.icon = betterResult.currently.icon;
+
+        //    wvm.hourly.data = betterResult.hourly.data.Take(8).ToArray();
+        //    wvm.hourly.summary = betterResult.hourly.summary;
+
+        //    wvm.daily.data = betterResult.daily.data.Take(8).ToArray();
+        //    wvm.daily.summary = betterResult.daily.summary;
+
+        //    return Json(wvm);
+        //}
     }
 }

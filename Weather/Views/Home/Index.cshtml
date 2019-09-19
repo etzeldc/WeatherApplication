@@ -55,9 +55,24 @@
                 </div>
             </div>
         </div>
-
-
-
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div id="hour0" class="col-md-3 table-bordered"></div>
+                    <div id="hour1" class="col-md-3 table-bordered"></div>
+                    <div id="hour2" class="col-md-3 table-bordered"></div>
+                    <div id="hour3" class="col-md-3 table-bordered"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div id="hour4" class="col-md-3 table-bordered"></div>
+                    <div id="hour5" class="col-md-3 table-bordered"></div>
+                    <div id="hour6" class="col-md-3 table-bordered"></div>
+                    <div id="hour7" class="col-md-3 table-bordered"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
@@ -73,102 +88,105 @@
 <script src="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
 </script>
-
 <script>
-        function getIcon(iconValue) {
-            switch (iconValue) {
-                case 'clear-day':
-                    return "/images/SunnyDay.png";
-                case 'cloudy':
-                case 'partly-cloudy-day':
-                    return "/images/MostlySunny.png";
-                case 'clear-night':
-                    return "/images/ClearMoon.png";
-                case 'partly-cloudy-night':
-                    return "/images/CloudyMoon.png";
-                case 'rain':
-                    return "/images/Rain.png";
-                case 'snow':
-                    return "/images/SNOW.png";
-                case 'sleet':
-                    return "/images/Sleet.png";
-                default:
-                    return "/images/SunnyDay.png";
-            }
+    function getIcon(iconValue) {
+        switch (iconValue) {
+            case 'clear-day':
+                return "/images/SunnyDay.png";
+            case 'cloudy':
+            case 'partly-cloudy-day':
+                return "/images/MostlySunny.png";
+            case 'clear-night':
+                return "/images/ClearMoon.png";
+            case 'partly-cloudy-night':
+                return "/images/CloudyMoon.png";
+            case 'rain':
+                return "/images/Rain.png";
+            case 'snow':
+                return "/images/SNOW.png";
+            case 'sleet':
+                return "/images/Sleet.png";
+            default:
+                return "/images/SunnyDay.png";
         }
+    }
 
-        function getGeoLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(success, fail);
-            }
-            else {
-                alert("Your browser doesn't support geolocation.");
-            }
-        };
-
-        function success(position) {
-            fetchLocation(position.coords.latitude, position.coords.longitude);
-            $.ajax({
-                type:"Post",
-                url: '/Home/GetWeather',
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
-                }),
-                datatype: "json",
-                success: function (data) {
-                    document.getElementById("ctemp").innerHTML = Math.round(data.currently.temperature) + "&deg";
-                    document.getElementById("csummary").innerHTML = data.currently.summary;
-                    document.getElementById("cwind").innerHTML = "Wind Speed is " + Math.round(data.currently.windSpeed) + "mph";
-                    document.getElementById("chumid").innerHTML =`Humidity is ${Math.round(data.currently.humidity * 100)}%`;
-                    document.getElementById("cprecip").innerHTML = "The chance of precipitation "+Math.round(data.currently.precipProbability * 100)+"%";
-                    document.getElementById("weatherIcon").src = getIcon(data.currently.icon);
-                    var day0 = data.daily.data[0];
-                    var day1 = data.daily.data[1];
-                    var day2 = data.daily.data[2];
-                    var day3 = data.daily.data[3];
-                    var day4 = data.daily.data[4];
-                    var day5 = data.daily.data[5];
-                    var day6 = data.daily.data[6];
-                    var day7 = data.daily.data[7];
-                    document.getElementById("day0").innerHTML = convert(day0.time) + "<br/>"+ Math.round(day0.temperatureHigh)+"&deg" +"<br/>"+ day0.summary;
-                    document.getElementById("day1").innerHTML = convert(day1.time) + "<br/>"+ Math.round(day1.temperatureHigh)+"&deg" +"<br/>"+ day1.summary;
-                    document.getElementById("day2").innerHTML = convert(day2.time) + "<br/>"+ Math.round(day2.temperatureHigh)+"&deg" +"<br/>"+ day2.summary;
-                    document.getElementById("day3").innerHTML = convert(day3.time) + "<br/>"+ Math.round(day3.temperatureHigh)+"&deg" +"<br/>"+ day3.summary;
-                    document.getElementById("day4").innerHTML = convert(day4.time) + "<br/>"+ Math.round(day4.temperatureHigh)+"&deg" +"<br/>"+ day4.summary;
-                    document.getElementById("day5").innerHTML = convert(day5.time) + "<br/>"+ Math.round(day5.temperatureHigh)+"&deg" +"<br/>"+ day5.summary;
-                    document.getElementById("day6").innerHTML = convert(day6.time) + "<br/>"+ Math.round(day6.temperatureHigh)+"&deg" +"<br/>"+ day6.summary;
-                    document.getElementById("day7").innerHTML = convert(day7.time) + "<br/>"+ Math.round(day7.temperatureHigh)+"&deg" +"<br/>"+ day7.summary;
-
-
-                },
-                error: function (error) {
-                    document.getElementById("error").innerHTML = error.responseText;
-                }
-            });
-        };
-
-        function fail() {
+    function getGeoLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, fail);
+        }
+        else {
             alert("Your browser doesn't support geolocation.");
-        };
-
-        function fetchLocation(latitude, longitude) {
-            var googleLink ="https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=**GOOGLE API KEY GOES HERE**";
-            fetch(googleLink)
-                .then(response => {
-                    return response.json()
-                })
-                .then(data => {
-                    document.getElementById("location").innerHTML = data.results[4].formatted_address;
-                })
-                .catch(err => {
-                    throw (`Sorry, en error occured ${err}.`);
-                })
-        };
-
-        function convert(time) {
-            var date = new Date(time*1000);
-            return date.toString().substring(0,3);
         }
+    };
+
+    function success(position) {
+        fetchLocation(position.coords.latitude, position.coords.longitude);
+        $.ajax({
+            type:"Post",
+            url: '/Home/GetWeather',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            }),
+            datatype: "json",
+            success: function (data) {
+                document.getElementById("ctemp").innerHTML = Math.round(data.currently.temperature) + "&deg";
+                document.getElementById("csummary").innerHTML = data.currently.summary;
+                document.getElementById("cwind").innerHTML = "Wind Speed is " + Math.round(data.currently.windSpeed) + "mph";
+                document.getElementById("chumid").innerHTML =`Humidity is ${Math.round(data.currently.humidity * 100)}%`;
+                document.getElementById("cprecip").innerHTML = "The chance of precipitation "+Math.round(data.currently.precipProbability * 100)+"%";
+                document.getElementById("weatherIcon").src = getIcon(data.currently.icon);
+                var target = -1;
+                for (var i = 0; i < 8; i++)
+                {
+                    target += 1;
+                    var dayId = "day" + target.toString();
+                    var day = data.daily.data[i];
+                    var hourId = "hour" + target.toString();
+                    var hour = data.hourly.data[i];
+                    document.getElementById(dayId).innerHTML = convertDay(day.time) + "<br/>"+ Math.round(day.temperatureHigh)+"&deg" +"<br/>"+ day.summary;
+                    document.getElementById(hourId).innerHTML = convertHour(hour.time) + "<br/>" + Math.round(hour.temperature) + "&deg" + "<br/>" + hour.summary;
+                }
+            },
+            error: function (error) {
+                document.getElementById("error").innerHTML = error.responseText;
+            }
+        });
+    };
+
+    function fail() {
+        alert("Your browser doesn't support geolocation.");
+    };
+
+    function fetchLocation(latitude, longitude) {
+        var googleLink ="https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=**GOOGLE API KEY GOES HERE**";
+        fetch(googleLink)
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                document.getElementById("location").innerHTML = data.results[4].formatted_address;
+            })
+            .catch(err => {
+                throw (`Sorry, en error occured ${err}.`);
+            })
+    };
+
+    function convertDay(time) {
+        var date = new Date(time*1000);
+        return date.toString().substring(0,3);
+    }
+
+    function convertHour(time) {
+        var date = new Date(time*1000);
+        var hours = date.getHours();
+        if (hours > 12) {
+            hours -= 12;
+            return hours.toString() + ":00 PM";
+        } else {
+            return hours.toString() + ":00 AM";
+        }
+    }
 </script>

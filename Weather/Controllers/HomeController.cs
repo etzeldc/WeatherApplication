@@ -68,29 +68,20 @@ namespace WeatherApp.Controllers
 
             return Json(wvm);
         }
-        //public async Task<ActionResult> GetWeatherByZip(float latitude, float longitude)
+
+        //WIP
+        //public async Task<ActionResult> GetWeatherByZip(int zipcode)
         //{
-        //    var apiKey = WebConfigurationManager.AppSettings["dsKey"];
-        //    var dsLink = $"https://api.darksky.net/forecast/{apiKey}/{latitude},{longitude}";
+        //    var apiKey = WebConfigurationManager.AppSettings[""];
+        //    var proMapLink = $"https://api.promaptools.com/service/us/zip-lat-lng/get/?zip={zipcode}&key={apiKey}";
 
-        //    var result = await getDataFromService(dsLink);
-        //    var betterResult = JsonConvert.DeserializeObject<Rootobject>(result);
+        //    var result = await getDataFromService(proMapLink);
 
-        //    WeatherViewModel wvm = new WeatherViewModel();
-        //    wvm.currently.temperature = betterResult.currently.temperature;
-        //    wvm.currently.summary = betterResult.currently.summary;
-        //    wvm.currently.windSpeed = betterResult.currently.windSpeed;
-        //    wvm.currently.humidity = betterResult.currently.humidity;
-        //    wvm.currently.precipProbability = betterResult.currently.precipProbability;
-        //    wvm.currently.icon = betterResult.currently.icon;
-
-        //    wvm.hourly.data = betterResult.hourly.data.Take(8).ToArray();
-        //    wvm.hourly.summary = betterResult.hourly.summary;
-
-        //    wvm.daily.data = betterResult.daily.data.Take(8).ToArray();
-        //    wvm.daily.summary = betterResult.daily.summary;
-
-        //    return Json(wvm);
+        //    sanitize result to lat and long below
+        //    var betterResult = JsonConvert.DeserializeObject< /*need object here*/ >(result);
+        //    var latitude = betterResult. ;
+        //    var longitude = betterResult. ;
+        //    return GetWeather(latitude, longitude);
         //}
     }
 }

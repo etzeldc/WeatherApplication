@@ -6,13 +6,13 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using WeatherApp.Models;
+using Weather.Models;
 using System.Web.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Microsoft.Ajax.Utilities;
 
-namespace WeatherApp.Controllers
+namespace Weather.Controllers
 {
     public class HomeController : Controller
     {
@@ -27,7 +27,6 @@ namespace WeatherApp.Controllers
 
             var client = new HttpClient();
             string result = "";
-
             try
             {
                 var response = await client.GetAsync(queryString).ConfigureAwait(false);
@@ -50,7 +49,7 @@ namespace WeatherApp.Controllers
             var dsLink = $"https://api.darksky.net/forecast/{apiKey}/{latitude},{longitude}";
 
             var result = await getDataFromService(dsLink);
-            var betterResult = JsonConvert.DeserializeObject<Rootobject>(result);
+            var betterResult = JsonConvert.DeserializeObject<Models.Dark.Rootobject>(result);
 
             WeatherViewModel wvm = new WeatherViewModel();
             wvm.currently.temperature = betterResult.currently.temperature;
@@ -72,16 +71,30 @@ namespace WeatherApp.Controllers
         //WIP
         //public async Task<ActionResult> GetWeatherByZip(int zipcode)
         //{
-        //    var apiKey = WebConfigurationManager.AppSettings[""];
-        //    var proMapLink = $"https://api.promaptools.com/service/us/zip-lat-lng/get/?zip={zipcode}&key={apiKey}";
+        //    var apiKey = WebConfigurationManager.AppSettings["googleKey"];
+        //    var googleLink = $"https://maps.googleapis.com/maps/api/geocode/json?address={zipcode}&key={apiKey}";
 
-        //    var result = await getDataFromService(proMapLink);
+        //    var result = await getDataFromService(googleLink);
+        //    var betterResult = JsonConvert.DeserializeObject<Models.ProMap.Rootobject>(result);
 
-        //    sanitize result to lat and long below
-        //    var betterResult = JsonConvert.DeserializeObject< /*need object here*/ >(result);
-        //    var latitude = betterResult. ;
-        //    var longitude = betterResult. ;
-        //    return GetWeather(latitude, longitude);
+        //    float latitude;
+        //    float longitude;
+            //try
+            //{
+            //    if (result.status == 1)
+            //    {
+            //var point = result[0];
+            //latitude = point.geometry.location.lat;
+            //longitude = point.geometry.location.lng;
+            //return await GetWeather(latitude, longitude);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    var error = ex.Message;
+            //    Console.WriteLine(error);
+            //}
+        //    return View("Error");
         //}
     }
 }

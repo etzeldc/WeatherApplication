@@ -21,6 +21,12 @@
                 Weather API
             </h2>
         </div>
+        @*@using (Html.BeginForm("GetWeatherByZip", "Home"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.TextBox("ZipCode", null, new { placeholder = "Zip Code" })
+            <input type="submit" name="zipcode" />
+        }*@
         <div class="row table-bordered">
             <div id="location"></div>
         </div>
@@ -161,7 +167,8 @@
     };
 
     function fetchLocation(latitude, longitude) {
-        var googleLink ="https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=**GOOGLE API KEY GOES HERE**";
+        var googleKey = '@System.Configuration.ConfigurationManager.AppSettings["googleKey"]';
+        var googleLink ="https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + googleKey;
         fetch(googleLink)
             .then(response => {
                 return response.json()
@@ -189,37 +196,5 @@
             return hours.toString() + ":00 AM";
         }
         }
-
-    // Zip code converter function -- WIP (Moving to controller)
-    //function zipToLatLong(zipcode, callbackFunction) 
-    //    {
-	   //     if (zipcode!="")
-	   //     {
-		  //      $.ajax({
-			 //       url: 'https://api.promaptools.com/service/us/zip-lat-lng/get/?zip='+zipcode+'&key='+FMTkey,
-			 //       type: "GET",
-			 //       dataType: 'JSON',
-			 //       success: function (result) {
-				//        if (result.status == "-3") 
-				//        {
-				//	        //No results
-				//	        console.log("Geocode was not successful ("+zipcode+")(-3)");
-				//        }
-				//        else if (result.status == "1") 
-				//        {
-				//	        callbackFunction(result.output[0],zipcode);
-				//	        global_postcode=zipcode;
-				//        }
-				//        else {
-				//	        console.log("Geocode was not successful for the following reason: " + result.msg);
-				//        }
-			 //       },
-				//        error: function (x, y, z) {
-				//        alert(y);
-			 //       }
-		  //      });
-
-	   //     }
-    //    }
 
 </script>
